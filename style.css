@@ -1,0 +1,24 @@
+.field {
+	width: 300px;
+	height: 300px;
+	border: 1px solid #585858;
+}
+.empty-cell, .cell {
+	width: 60px;
+	height: 60px;
+	display: inline-block;
+	margin: 6px;
+	font-size: 20px;
+	line-height: 55px;
+}
+.cell {
+	background-color: #40b868;
+	border: 1px solid #585858;
+	border-radius: 5px;
+	color: white;
+	text-align: center;
+	cursor: pointer;
+}
+.empty-cell {
+	border: 1px solid white;
+}

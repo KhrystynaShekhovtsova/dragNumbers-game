@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<link rel="stylesheet" href="style.css">
+		<script src="jquery-1.10.1.js"></script>
+		<script src="underscore-min.js"></script>
+		<title>game</title>
+	</head>
+	<body>
+		<div class="field">
+			
+		</div>
+
+		<script>
+			$(document).ready(function () {
+
+				var empty_cell = $('<div class="empty-cell">&nbsp;</div>');
+				var numbers = _.range(1, 8);
+
+				function startAgain() {
+					numbers = _.shuffle(numbers);
+
+					$('.field').empty();
+
+					for(i = 0; i < numbers.length; i++) {
+						$('.field').append('<div class="cell">' + numbers[i] + '</div>');
+					}
+
+					$('.field').append(empty_cell);
+				}
+
+				startAgain();
+
+				var margin = empty_cell.width() + 1*2 + 6*2; // 1 - border, 6 - margin
+
+				$(document).on('click', '.cell', function () {
+					var $this = $(this),
+						cell_left = $this.position().left,
+						cell_top = $this.position().top,
+						empty_left = empty_cell.position().left,
+						empty_top = empty_cell.position().top;
+
+					if (cell_left == empty_left && Math.abs(cell_top - empty_top) == margin
+						||
+						cell_top == empty_top && Math.abs(cell_left - empty_left) == margin)
+					{
+						swap($this, empty_cell);
+
+						if (isGameOver()) {
+							if (confirm('Наші вітання! Ви це зробили!\nПочати нову гру?')) {
+								startAgain();
+							}
+						}
+					}
+				});
+
+				function swap(a, b) {
+				    var tmp = $('<span>').hide();
+				    a.before(tmp);
+				    b.before(a);
+				    tmp.replaceWith(b);
+				}
+
+				function isGameOver() {
+					if (!empty_cell.is(':last-child')) {
+						return false;
+					}
+
+					var loopStopped = false;
+
+					$('.field .cell').each(function () {
+						var $this = $(this);
+						if ($this.next()[0] != empty_cell[0] && $this.text() * 1 > $this.next().text() * 1) {
+							loopStopped = true;
+							return false;
+						}
+					});
+
+					return !loopStopped;
+				}
+			});
+		</script>
+	</body>
+</html>
